@@ -1,0 +1,7 @@
+fastapi
+pydantic
+httpx
+supabase-py
+beautifulsoup4
+uvicorn
+python-dotenv
