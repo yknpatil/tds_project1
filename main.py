@@ -6,9 +6,23 @@ from supabase import create_client
 import os
 import json
 from bs4 import BeautifulSoup
-import re 
+import re
+from fastapi.middleware.cors import CORSMiddleware # Import CORS middleware 
 
 app = FastAPI()
+
+# Allow requests from ANY origin
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True, # Allow cookies/authentication headers to be sent
+    allow_methods=["*"],    # Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],    # Allow all HTTP headers
+)
 
 # --- Configuration (Used SUPABASE for embedded data storing) ---
 SUPABASE_URL = os.getenv("SUPABASE_URL")
