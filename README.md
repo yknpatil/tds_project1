@@ -46,8 +46,46 @@ This project builds a virtual TA capable of understanding and responding to stud
 
 ### 4. Backend API using FastAPI
 
-- **Script:** `main.py`
-- **Purpose:** Serve the virtual TA's responses using embedded data
+* **Script:** `main.py`
+* **Purpose:** This FastAPI application acts as the central brain for the Virtual Teaching Assistant (TA). It takes your questions and gives back clear, relevant answers from various knowledge sources.
+
+**How the Search Works (Search Logic):**
+
+Our API uses a smart **Retrieval-Augmented Generation (RAG)** system to get you the best answer. It prioritizes information like this:
+
+1.  **Direct URL First:**
+    * When you ask a question, the API first checks if you've given it a specific **Discourse forum link** (like in the `url` field).
+    * If you have, it will **focus on fetching and searching for content directly from that exact Discourse thread**. This helps ensure the answer is super relevant to what you're looking at.
+
+2.  **Vector Database Fallback:**
+    * If you didn't provide a URL, or if the content from the URL wasn't enough to answer your question, the system then **switches to searching its powerful vector database**.
+    * Your question (and any image you included) is turned into **numerical embeddings** using **Jina AI's models**.
+    * These embeddings are then used to find similar information in our **Supabase vector database**. This database holds pre-processed content from **both the official TDS course materials** (like `tds.s-anand.net` pages) **and the Discourse forum posts**. So, if no direct URL was given, it searches both.
+
+3.  **Answer Generation:**
+    * The most relevant information found (either from the direct URL or the vector database) is then given to a **Large Language Model (LLM)**. Currently, we use `openai/gpt-4o-mini` through `aipipe.org/openrouter`. The LLM uses this information to create a clear and concise answer.
+
+    * **Example Answer Format:**
+        ```json
+        {
+          "answer": "You must use `gpt-3.5-turbo-0125`, even if the AI Proxy only supports `gpt-4o-mini`. Use the OpenAI API directly for this question.",
+          "links": [
+            {
+              "url": "[https://discourse.onlinedegree.iitm.ac.in/t/ga5-question-8-clarification/155939/4](https://discourse.onlinedegree.iitm.ac.in/t/ga5-question-8-clarification/155939/4)",
+              "text": "Use the model that’s mentioned in the question."
+            },
+            {
+              "url": "[https://discourse.onlinedegree.iitm.ac.in/t/ga5-question-8-clarification/155939/3](https://discourse.onlinedegree.iitm.ac.in/t/ga5-question-8-clarification/155939/3)",
+              "text": "My understanding is that you just have to use a tokenizer, similar to what Prof. Anand used, to get the number of tokens and multiply that by the given rate."
+            }
+          ]
+        }
+        ```
+
+4.  **No Answer Found:**
+    * If, even after checking both the direct URL and the entire vector database, the system can't find enough confident information to answer your question, it will simply reply with: "**I don't know**."
+
+This multi-step search ensures the TA provides the most accurate and helpful response possible.
 
 ---
 
