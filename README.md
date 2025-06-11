@@ -24,7 +24,7 @@ This project builds a virtual TA capable of understanding and responding to stud
 #### Discourse Posts
 - **URL:** [TDS Discourse Forum](https://discourse.onlinedegree.iitm.ac.in/c/courses/tds-kb/34)
 - **Script:** `2_scrape_discourse.py`
-- **Method:** Scraped from Discourse site
+- **Method:** Scraped from Discourse API
 - **Output:** `4_discourse_posts_2025.json`
 
 ---
