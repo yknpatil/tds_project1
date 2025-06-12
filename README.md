@@ -93,6 +93,7 @@ This multi-step search ensures the TA provides the most accurate and helpful res
 
 - **Config File:** `9.project-tds-virtual-ta-promptfoo_y.yaml`
 - **Tool:** [Promptfoo](https://github.com/promptfoo/promptfoo)
+- **Configuration** Configured the llm-rubric assertions to leverage an AI proxy token and the gpt-4o-mini model
 
 ---
 
